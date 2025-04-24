@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel IoT - Monitoramento de Água</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('imagem/reservatório.JPG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0,0,0,0.5);
+            z-index: -1;
+        }
+        h1 {
+            color: #dce5e7;
+        }
+        .container {
+            position: relative;
+            width: 700px;
+            height: 400px;
+            margin-top: 30px;
+            /* Removed background image behind cards */
+            background: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .dashboard {
+            display: flex;
+            gap: 40px;
+            margin-top: 0;
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            justify-content: space-around;
+        }
+        .section {
+            background: rgb(224, 218, 218);
+            border-radius: 8px;
+            box-shadow: 0 0 15px #00bfff, 0 0 30px #00bfff inset;
+            padding: 40px 50px;
+            width: 400px;
+            text-align: center;
+            border: 2px solid #0084ff;
+            backdrop-filter: brightness(1.1);
+        }
+        .section h2 {
+            margin-bottom: 20px;
+            color: #007acc;
+        }
+        .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        .label {
+            font-size: 1em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            width: 30px;
+            height: 150px;
+            background-color: #d4dde9;
+            border-radius: 10px;
+            margin: 10px auto 0 auto;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .progress-fill {
+            width: 100%;
+            background: linear-gradient(180deg, #00bfff, #1e90ff);
+            border-radius: 10px 10px 0 0;
+            height: 0%;
+            transition: height 0.5s ease-in-out;
+            box-shadow: 0 0 8px #00bfff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .progress-metric {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: -25px;
+            font-weight: bold;
+            color: #007acc;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <img src="imagem/LogoSENAI.jpg" alt="LogoSENAI" style="height: 50px;" />
+        <h1>Painel IoT - Monitoramento - IST-SENAI</h1>
+    </div>
+    <div class="container">
+        <div class="dashboard">
+            <div class="section" id="reservatorio">
+                <h2>Reservatório</h2>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Water_tank_icon.svg/120px-Water_tank_icon.svg.png" alt="Reservatório" style="width: 120px; margin-bottom: 20px;" />
+                <div>
+                    <div class="value" id="volume-reservatorio">-- L</div>
+                    <div class="label">Volume de Água</div>
+                </div>
+            <div>
+                <div class="label">Percentual</div>
+                <div class="value" id="percentual-reservatorio">-- %</div>
+            <div class="progress-bar">
+                <div class="progress-metric" id="metric-reservatorio">--%</div>
+                <div class="progress-fill" id="progress-reservatorio"></div>
+            </div>
+            </div>
+        </div>
+            <div class="section" id="cisterna">
+                <h2>Cisterna</h2>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Water_tank_icon_2.svg/120px-Water_tank_icon_2.svg.png" alt="Cisterna" style="width: 120px; margin-bottom: 20px;" />
+                <div>
+                    <div class="value" id="volume-cisterna">-- L</div>
+                    <div class="label">Volume de Água</div>
+                </div>
+            <div>
+                <div class="label">Percentual</div>
+                <div class="value" id="percentual-cisterna">-- %</div>
+            <div class="progress-bar">
+                <div class="progress-metric" id="metric-cisterna">--%</div>
+                <div class="progress-fill" id="progress-cisterna"></div>
+            </div>
+                </div>
+            </div>
+    </div>
+    </div>
+
+    <script>
+        // Simulated data for demonstration
+        const data = {
+            reservatorio: {
+                volume: 7500,
+                capacidade: 10000
+            },
+            cisterna: {
+                volume: 3200,
+                capacidade: 5000
+            }
+        };
+
+        function updateDashboard() {
+            const volRes = data.reservatorio.volume;
+            const capRes = data.reservatorio.capacidade;
+            const percRes = ((volRes / capRes) * 100).toFixed(1);
+
+            const volCis = data.cisterna.volume;
+            const capCis = data.cisterna.capacidade;
+            const percCis = ((volCis / capCis) * 100).toFixed(1);
+
+            document.getElementById('volume-reservatorio').textContent = volRes + ' L';
+            document.getElementById('percentual-reservatorio').textContent = percRes + ' %';
+
+            document.getElementById('volume-cisterna').textContent = volCis + ' L';
+            document.getElementById('percentual-cisterna').textContent = percCis + ' %';
+        }
+
+        updateDashboard();
+
+        function updateProgressBars() {
+            const percRes = ((data.reservatorio.volume / data.reservatorio.capacidade) * 100).toFixed(1);
+            const percCis = ((data.cisterna.volume / data.cisterna.capacidade) * 100).toFixed(1);
+
+            document.getElementById('progress-reservatorio').style.width = percRes + '%';
+            document.getElementById('progress-cisterna').style.width = percCis + '%';
+        }
+
+        updateProgressBars();
+
+        function updateProgressBars() {
+            const percRes = ((data.reservatorio.volume / data.reservatorio.capacidade) * 100).toFixed(1);
+            const percCis = ((data.cisterna.volume / data.cisterna.capacidade) * 100).toFixed(1);
+
+            const progressReservatorio = document.getElementById('progress-reservatorio');
+            const progressCisterna = document.getElementById('progress-cisterna');
+
+            progressReservatorio.style.height = percRes + '%';
+            progressCisterna.style.height = percCis + '%';
+
+            document.getElementById('metric-reservatorio').textContent = percRes + '%';
+            document.getElementById('metric-cisterna').textContent = percCis + '%';
+        }
+
+        updateProgressBars();
+    </script>
+</body>
+</html>
