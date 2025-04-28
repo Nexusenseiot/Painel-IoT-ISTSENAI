@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EletroIA - Assistente Elétrico</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      position: relative;
+      background-image: url('robos-humanoides.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      color: #e0f7ff;
+      text-align: center;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+    
+    #pergunta {
+      width: 50%;
+      margin: 0 auto;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #00aaff;
+      border-radius: 12px;
+      background-color: #0a0f1a;
+      color: #e0f7ff;
+      box-shadow:
+        inset 0 0 15px #00aaff,
+        0 0 20px #00aaff;
+      outline: none;
+      transition: box-shadow 0.3s ease-in-out;
+      font-family: 'Courier New', Courier, monospace;
+      background-image:
+        linear-gradient(rgba(0,170,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,170,255,0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    #resposta {
+      width: 50%;
+      margin: 20px auto 0 auto;
+      font-size: 18px;
+      color: #e0f7ff;
+      background-color: #0a0f1a;
+      border: 2px solid #00aaff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow:
+        inset 0 0 15px #00aaff,
+        0 0 20px #00aaff;
+      min-height: 60px;
+      transition: box-shadow 0.3s ease-in-out;
+      font-family: 'Courier New', Courier, monospace;
+      background-image:
+        linear-gradient(rgba(0,170,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,170,255,0.05) 1px, transparent 1px);
+    }
+
+    h1 {
+      font-size: 80px;
+      font-weight: bold;
+      color: #00aaff;
+      text-shadow: 0 0 15px #00aaff, 0 0 30px #00d4ff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    p {
+      font-size: 24px;
+      color: #00d4ff;
+      text-shadow: 0 0 8px #00aaff;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+
+    #pergunta {
+      /* Removed duplicate styles */
+    }
+
+    #pergunta:focus {
+      box-shadow:
+        inset 0 0 25px #00d4ff,
+        0 0 30px #00d4ff;
+      border-color: #00d4ff;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px);
+    }
+
+    #btnEnviar {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #resposta {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #e0f7ff;
+      background-color: #0a0f1a;
+      border: 2px solid #00aaff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow:
+        inset 0 0 15px #00aaff,
+        0 0 20px #00aaff;
+      min-height: 60px;
+      transition: box-shadow 0.3s ease-in-out;
+      font-family: 'Courier New', Courier, monospace;
+      background-image:
+        linear-gradient(rgba(0,170,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,170,255,0.05) 1px, transparent 1px);
+    }
+
+    #resposta:hover {
+      box-shadow:
+        inset 0 0 25px #00d4ff,
+        0 0 30px #00d4ff;
+      border-color: #00d4ff;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px);
+    }
+
+  #btnVoz {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #001f33;
+      color: white;
+      font-size: 28px;
+      border: 2px solid #00aaff;
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      cursor: pointer;
+      box-shadow:
+        0 0 10px #00aaff,
+        0 0 20px #00d4ff,
+        0 0 30px #00aaff,
+        0 0 40px #00d4ff,
+        0 0 60px #00aaff;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.3s ease-in-out;
+    }
+
+  #btnVoz:hover {
+      background-color: #0077cc;
+      box-shadow:
+        0 0 20px #00d4ff,
+        0 0 30px #00aaff,
+        0 0 40px #00d4ff,
+        0 0 60px #00aaff;
+    }
+    h1 {
+      font-size: 48px;
+      font-weight: bold;
+      color: #00aaff;
+      text-shadow: 0 0 10px #00aaff, 0 0 20px #00d4ff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #00d4ff;
+      text-shadow: 0 0 5px #00aaff;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>
+    EletroIA ⚡
+    <img src="ROBÔ.webp" alt="Ícone de robô" style="height: 48px; vertical-align: middle; margin-left: 10px;">
+  </h1>
+  <p>Descreva seu problema elétrico ou use o microfone!</p>
+
+  <input type="text" id="pergunta" placeholder="Digite seu problema aqui...">
+  <button id="btnEnviar" onclick="enviarPergunta()">Enviar</button>
+
+  <div id="resposta"></div>
+
+  <button id="btnVoz" onclick="ativarVoz()" title="Clique para falar">
+    <img src="Microfone.jfif" alt="Microfone" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+  </button>
+
+  <script>
+    function enviarPergunta(texto = null) {
+      const problemas = [
+        {
+          keywords: ["luz", "não acende", "nao acende", "lâmpada", "lampada"],
+          resposta: "Verifique se a lâmpada está queimada ou se há disjuntor desarmado."
+        },
+        {
+          keywords: ["tomada", "sem energia", "não funciona", "nao funciona"],
+          resposta: "Pode ser um fio solto ou disjuntor desligado. Verifique com um multímetro."
+        },
+        {
+          keywords: ["disjuntor", "desarma", "desligando", "desligou"],
+          resposta: "Pode haver curto-circuito ou sobrecarga. Revise os circuitos ligados."
+        },
+        {
+          keywords: ["fio", "queimado", "fiação", "curto-circuito", "curto circuito"],
+          resposta: "Verifique a fiação para identificar possíveis fios queimados ou curto-circuitos."
+        },
+        {
+          keywords: ["interruptor", "não funciona", "nao funciona", "botão"],
+          resposta: "Pode ser um interruptor com defeito ou mau contato. Teste ou substitua o interruptor."
+        },
+        {
+          keywords: ["lâmpada", "pisca", "piscando", "intermitente"],
+          resposta: "Pode ser um problema na lâmpada ou na fiação. Verifique conexões e substitua a lâmpada se necessário."
+        },
+        {
+          keywords: ["energia", "queda", "oscilação", "queda de energia"],
+          resposta: "Pode ser problema na rede elétrica ou no disjuntor. Consulte a companhia elétrica se persistir."
+        }
+      ];
+
+      let pergunta = texto || document.getElementById("pergunta").value.toLowerCase();
+      let resposta = "Desculpe, não entendi o problema. Tente descrever de outra forma.";
+
+      for (let problema of problemas) {
+        let match = problema.keywords.some(keyword => pergunta.includes(keyword));
+        if (match) {
+          resposta = problema.resposta;
+          break;
+        }
+      }
+
+      document.getElementById("resposta").innerText = resposta;
+      falar(resposta);
+    }
+
+    function ativarVoz() {
+      const reconhecimento = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      reconhecimento.lang = "pt-BR";
+      reconhecimento.start();
+
+      reconhecimento.onresult = function(event) {
+        const textoFalado = event.results[0][0].transcript;
+        document.getElementById("pergunta").value = textoFalado;
+        enviarPergunta(textoFalado.toLowerCase());
+      };
+
+      reconhecimento.onerror = function(event) {
+        alert("Erro no reconhecimento de voz: " + event.error);
+      };
+    }
+
+    function falar(mensagem) {
+      const sintese = window.speechSynthesis;
+      const fala = new SpeechSynthesisUtterance(mensagem);
+      fala.lang = "pt-BR";
+      sintese.speak(fala);
+    }
+  </script>
+
+</body>
+</html>
